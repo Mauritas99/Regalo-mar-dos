@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Amor! ❤️</title>
+    <!-- Incluimos las fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=GFS+Didot&display=swap" rel="stylesheet">
+    <!-- Iconos de FontAwesome para el patito y el corazón -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+    <link rel="icon" type="image/svg+xml" href="images/amor.png">
+    <style>
+        /* 1. ANIMACIONES KEYFRAMES */
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        /* Animación para el carrusel: zoom out sutil */
+        @keyframes zoomOut {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* 1. ESTILOS BASE Y CONTENEDORES GLOBALES */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-color: #44444E; 
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        /* 2. CLASES DE PANTALLA GENERALES */
+        .screen {
+            width: 390px; 
+            height: 844px; 
+            background-color: #FFE9B1;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            padding: 20px 20px 0 20px;
+            display: none;
+            
+            /* TRANSICIÓN */
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        
+        /* Modificación para todas las pantallas del flujo normal */
+        .screen.is-visible {
+            opacity: 1;
+            transform: scale(1);
+            display: block; 
+        }
+        
+        /* CORRECCIÓN CRÍTICA: Sacar la pantalla 6 del flujo normal y control total por JS */
+        #screen-6 {
+            position: absolute; /* Saca del flujo */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centrar la pantalla absolutamente */
+            padding: 0; 
+            overflow: hidden;
+            display: none; /* Asegurar que inicie oculta */
+        }
+        
+        #screen-6.is-visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            /* NOTA: display: block se maneja en el JS antes de añadir is-visible */
+        }
+
+        /* Pantalla 1: Vista Principal */
+        #screen-1 {
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        /* ------------------------------------------- */
+        /* ESTILOS DE LA PANTALLA 1 (VISTA PRINCIPAL) */
+        /* ------------------------------------------- */
+
+        .title-screen-1 {
+            font-family: "Anton", sans-serif;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 1;
+            text-align: center;
+            color: #44444E;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+            position: absolute;
+            top: 45%; 
+            left: 50%;
+            animation: bounce 2s infinite ease-in-out; 
+            z-index: 10;
+            width: 300px;
+            pointer-events: none; 
+        }
+
+        .apodo-flotante {
+            font-family: "GFS Didot", serif; 
+            font-weight: 400;
+            font-style: normal;
+            font-size: 34px;
+            color: #44444E;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+            position: absolute;
+            z-index: 5;
+            transform-origin: center center;
+            pointer-events: none; 
+        }
+        /* Posicionamiento Individual y Rotación de los Apodos */
+        .apodo-1 { top: 100px; left: 60px; transform: rotate(-30deg); }
+        .apodo-2 { top: 250px; left: 20px; transform: rotate(-15deg); }
+        .apodo-3 { bottom: 150px; left: 30px; transform: rotate(-25deg); }
+        .apodo-4 { top: 200px; right: 20px; transform: rotate(15deg); }
+        .apodo-8 { top: 80px; right: 50px; transform: rotate(25deg); }
+        .apodo-5 { top: 550px; left: 150px; transform: rotate(5deg); }
+        .apodo-6 { bottom: 50px; right: 50px; transform: rotate(35deg); }
+        .apodo-7 { bottom: 250px; right: 30px; transform: rotate(10deg); }
+
+        /* Fondo de Confeti */
+        .confeti-fondo-tile {
+            background-image: url('images/serpentinas.png'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: absolute;
+            height: 284px;
+            width: 466px;
+            transform: scale(2);
+            z-index: 1;
+            opacity: 0.65;
+            pointer-events: none;
+        }
+        .serp-1 { top: 0; left: 110px; }
+        .serp-2 { top: 0; left: -110px; }
+        .serp-3 { top: 240px; left: 110px; }
+        .serp-4 { top: 240px; left: -110px; }
+        .serp-5 { top: 565px; left: 110px; }
+        .serp-6 { top: 565px; left: -110px; }
+        
+        /* ------------------------------------------- */
+        /* ESTILOS DE PANTALLAS 2, 3, 5 */
+        /* ------------------------------------------- */
+        .title-screen-2, .title-screen-3, .title-screen-5 {
+            font-family: "Anton", sans-serif;
+            font-size: 36px;
+            line-height: 1.1;
+            text-align: center;
+            color: #44444E;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+            padding-bottom: 25px; 
+            border-bottom: 2px solid #7743DB; 
+            display: inline-block;
+        }
+        
+        /* Centrar el contenedor del título Reglas */
+        #screen-3 center {
+            width: 100%;
+            display: block; 
+            text-align: center;
+        }
+        
+        .title-screen-3 { 
+            font-size: 60px; 
+            border-bottom: none; 
+            margin-top: 50px;
+        } 
+        
+        .title-screen-5 { font-size: 55px; border-bottom: none; } 
+        
+        .text-screen-2, .rules-list, .text-screen-5 {
+            font-family: "GFS Didot", serif;
+            font-size: 24px;
+            line-height: 1.3;
+            color: #44444E;
+            text-align: center;
+            padding: 0 10px;
+        }
+        .text-screen-2 { margin-bottom: 60px;}
+        .text-screen-5 { margin-bottom: 80px; }
+        .highlight-text { color: #7743DB; font-weight: bold; }
+        .rules-list { 
+            list-style: none; 
+            padding: 0 10px 0 10px; 
+            margin: 0; 
+            text-align: left; 
+            font-size: 22px; 
+            width: 100%; 
+            box-sizing: border-box;
+        }
+        .rules-list li { margin-bottom: 15px; position: relative; padding-left: 20px; }
+        .rules-list li::before { content: '•'; position: absolute; left: 0; font-size: 1.2em; line-height: 1; }
+
+        /* Estilo general de botón */
+        .next-button {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            padding: 15px 30px;
+            color: white;
+            font-family: "Anton", sans-serif;
+            font-size: 24px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s, opacity 0.3s;
+            text-transform: uppercase;
+        }
+        /* Colores de botón por estado */
+        .btn-default { background-color: #794DFF; }
+        .btn-default:hover { background-color: #5A2DCF; }
+        .btn-disabled { background-color: #44444E; opacity: 0.6; cursor: not-allowed; }
+        .btn-error { background-color: #E74C3C; }
+        .btn-error:hover { background-color: #C0392B; }
+        .btn-success { background-color: #794DFF; }
+        .btn-success:hover { background-color: #5A2DCF; }
+
+        /* ------------------------------------------- */
+        /* ESTILOS DE LA PANTALLA 4 (JUEGO) */
+        /* ------------------------------------------- */
+        #screen-4 {
+            padding-top: 20px;
+            padding-bottom: 100px;
+            text-align: center;
+        }
+        
+        .game-title {
+            font-family: "Anton", sans-serif;
+            font-size: 55px;
+            color: #44444E;
+            text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+        }
+
+        /* Estilo Polaroid */
+        .polaroid-frame {
+        display: flex;
+        width: 280px;
+        height: 530px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        margin: 0 auto 20px auto;
+        padding: 15px 15px 45px 15px;
+        box-sizing: border-box;
+        position: relative;
+        flex-direction: column;
+        row-gap: 20px;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .recalled-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            filter: blur(8px);
+            transition: filter 1s ease-out;
+        }
+
+        .image-container.revealed .recalled-image {
+            filter: blur(0);
+        }
+        
+        .frase-pista {
+            font-family: "GFS Didot", serif;
+            font-size: 20px;
+            color: #44444E;
+            margin: 5px 0 20px 0; /* Ajuste de margen para la frase */
+            min-height: 24px; 
+            opacity: 0.8;
+            line-height: 1.1; 
+        }
+        
+        /* Input, Submit y Patito */
+        .input-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 95%; 
+            max-width: 350px; 
+            margin: 0 auto 10px auto;
+        }
+
+        .input-group { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            width: calc(100% - 60px); 
+            margin-right: 10px;
+            position: relative; 
+            transition: all 0.2s; 
+            flex-grow: 1; 
+        }
+        .input-group.shake { animation: shake 0.4s; }
+        .input-group input { 
+            padding: 10px; 
+            border: 2px solid #44444E; 
+            border-radius: 8px 0 0 8px;
+            font-size: 18px; 
+            font-family: "GFS Didot", serif; 
+            width: 100%; 
+            transition: border-color 0.3s; 
+            box-sizing: border-box;
+        }
+        .input-group.error input { border-color: #E74C3C; }
+
+        /* Botón de Submit */
+        #btn-submit-guess {
+            background-color: #5A8BD9;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            padding: 10px;
+            height: 44px;
+            width: 44px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            flex-shrink: 0;
+        }
+        #btn-submit-guess:hover {
+            background-color: #4A7BAA;
+        }
+
+        .patito-btn { 
+            background-color: #5A8BD9; 
+            color: white;
+            border: none; 
+            border-radius: 50%; 
+            width: 45px; 
+            height: 45px; 
+            cursor: pointer; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+            transition: background-color 0.3s, opacity 0.3s; 
+            font-size: 20px; 
+            background-image: url('images/pato.png'); 
+            background-size: 70%;
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+        }
+        .patito-btn i { display: none; }
+        .patito-btn:hover:not(:disabled) { background-color: #4A7BAA; }
+        .patito-btn:disabled { background-color: #888888; opacity: 0.6; cursor: not-allowed; }
+        .tooltip-message { position: fixed; bottom: 50%; left: 50%; text-align: center; transform: translateX(-50%); background-color: #44444E; color: white; padding: 10px 10px; border-radius: 10px; font-family: "GFS Didot", serif; font-size: 18px; opacity: 0; transition: opacity 0.5s ease-in-out; z-index: 100; pointer-events: none; }
+        .tooltip-message.show { opacity: 1; }
+
+        /* ------------------------------------------- */
+        /* ESTILOS DE LA PANTALLA 5 (FELICIDADES) */
+        /* ------------------------------------------- */
+        #screen-5 {
+            padding-top: 50px;
+            text-align: center;
+            overflow: hidden; 
+        }
+        
+        /* Menos serpentinas y solo en la parte superior */
+        .confeti-fondo-tile {
+            height: 200px; /* Reducir altura del tile */
+            width: 300px;
+            opacity: 0.7;
+        }
+
+        /* Ocultar los tiles no utilizados en la Pantalla 5 */
+        #screen-5 .confeti-fondo-tile:nth-child(n+3) {
+            display: none;
+        }
+
+        #screen-5 .serp-1 { top: 0px; left: 110px; z-index: -1; opacity: 0.65;}
+        #screen-5 .serp-2 { top: 0px; left: -110px; z-index: -1; opacity: 0.65;} 
+        
+        .touch-prompt {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: "GFS Didot", serif;
+            font-size: 16px;
+            color: #44444E;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .heart-button {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: none;
+            border: none;
+            font-size: 40px;
+            cursor: pointer;
+            color: #E74C3C; /* Rojo corazón */
+            animation: pulse 1.5s infinite; /* Animación de latido */
+            padding: 10px;
+        }
+        .heart-button {
+        left: 168px;
+        bottom: 60px;
+    }
+
+        /* ------------------------------------------- */
+        /* ESTILOS DE LA PANTALLA 6 (MÚSICA/GALERÍA) */
+        /* ------------------------------------------- */
+        #screen-6 {
+            padding: 0;
+            background-color: #34495E;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        #gallery-image {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            /* Animaciones de carrusel: fade out lento (1.5s) */
+            opacity: 0;
+            transform: scale(1.05); /* Zoom inicial */
+            transition: opacity 1.5s ease-in-out, transform 4s linear; 
+        }
+        #gallery-image.show {
+            opacity: 1;
+            transform: scale(1); /* Zoom final */
+            animation: zoomOut 4s linear; /* Aplica el zoom out en la imagen visible */
+        }
+        /* Eliminamos los estilos de letra y gradiente */
+        .lyrics-title, .lyrics-container {
+            display: none;
+        }
+
+        #audio-player {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- PANTALLA 1: VISTA PRINCIPAL -->
+    <div id="screen-1" class="screen principal-container is-visible">
+        <div class="confeti-fondo-tile serp-1"></div>
+        <div class="confeti-fondo-tile serp-2"></div>
+        <div class="confeti-fondo-tile serp-3"></div>
+        <div class="confeti-fondo-tile serp-4"></div>
+        <div class="confeti-fondo-tile serp-5"></div>
+        <div class="confeti-fondo-tile serp-6"></div>
+        <h1 class="title-screen-1">¡Feliz <br> cumpleaños!</h1> 
+        <p class="apodo-flotante apodo-1">Mar</p><p class="apodo-flotante apodo-2">Flaca</p>
+        <p class="apodo-flotante apodo-3">Reina</p><p class="apodo-flotante apodo-4">Marianita</p>
+        <p class="apodo-flotante apodo-5">Amor</p><p class="apodo-flotante apodo-6">Rulitos</p>
+        <p class="apodo-flotante apodo-7">Mari</p><p class="apodo-flotante apodo-8">Bb</p>
+    </div>
+
+    <!-- PANTALLA 2: MENSAJE -->
+    <div id="screen-2" class="screen">
+        <center><h2 class="title-screen-2">Y que seas siempre <br> feliz amor mío</h2></center>
+        <p class="text-screen-2">¡26 años mi vida! Desde la pequeña Marianita que se asustaba con las bengalas de la torta a una mujer que demuestra cada día que hacer las cosas con <span class="highlight-text">pasión</span>, <span class="highlight-text">amor</span> y <span class="highlight-text">profesión</span> te vuelven una persona única y muy valiosa.</p>
+        <p class="text-screen-2">Esto no es mas que un pequeño detalle hecho con todo eso que mencioné y me enseñas todos los días</p>
+        <button id="btn-to-screen3" class="next-button btn-default">Ver reglas</button>
+    </div>
+    
+    <!-- PANTALLA 3: REGLAS DEL JUEGO -->
+    <div id="screen-3" class="screen">
+        <!-- CORRECCIÓN: Se envuelve el título en <center> para centrar el bloque inline-block -->
+        <center><h2 class="title-screen-3">Reglas</h2></center>
+        <ul class="rules-list">
+            <li>Tu misión es develar los <span class='highlight-text'>recuerdos</span> que se encuentran ocultos</li>
+            <li>Para esto, vas a tener una <span class='highlight-text'>frase</span> que te ayudará a develar el código.</li>
+            <li>Si estás perdida, podés tocar el <span class='highlight-text'>patito ayudante</span>, que te dará una pista.</li>
+            <li>Si aún así no sacás el código  <span class='highlight-text'>(alta opa)</span>, podes tocar nuevamente el pato para que te brinde el código</li>
+        </ul>
+        <button id="btn-to-start" class="next-button btn-default">Inicio</button>
+    </div>
+
+    <!-- PANTALLA 4: JUEGO - RECUERDO X (Módulo Dinámico) -->
+    <div id="screen-4" class="screen">
+        <h2 id="game-title" class="game-title">Recuerdo X</h2>
+        <div class="polaroid-frame">
+            <div id="image-container" class="image-container">
+                <img id="recalled-image" class="recalled-image" src="" alt="Recuerdo Oculto">
+            </div>
+            <p id="phrase" class="frase-pista"></p>
+            <div class="input-controls">
+                <div id="input-group" class="input-group">
+                    <input type="text" id="guess-input" placeholder="Ingresa la palabra clave" autocomplete="off">
+                    <!-- NUEVO BOTÓN: Submit de la palabra -->
+                    <button id="btn-submit-guess"><i class="fas fa-check"></i></button>
+                </div>
+                <!-- Patito para la pista -->
+                <button id="patito-btn" class="patito-btn"><i class="fas fa-quidditch"></i></button>
+            </div>
+        </div>
+        <button id="btn-next-memory" class="next-button btn-disabled" disabled>No disponible</button>
+    </div>
+
+    <!-- PANTALLA 5: FELICIDADES -->
+    <div id="screen-5" class="screen">
+        <!-- CORRECCIÓN: Solo 2 tiles de serpentinas, posicionados arriba -->
+        <div class="confeti-fondo-tile serp-1"></div>
+        <div class="confeti-fondo-tile serp-2"></div>
+        
+        <h2 class="title-screen-5">¡Felicidades!</h2>
+        
+        <p class="text-screen-5">
+            Espero que hayas disfrutado este pequeño paseo por el tiempo, que nos trae lindos momentos, muchas risas compartidas y un recordatorio a nuestro compromiso de ser uno los dos <span class='highlight-text'>pato-dalavida</span>.
+        </p>
+        <p class="text-screen-5">
+            Un <span class='highlight-text'>último detallito</span>, porque le faltó música al asunto, ¿no?
+        </p>
+
+        <p id="touch-prompt" class="touch-prompt">¡Toca el corazón!</p>
+        <button id="heart-btn" class="heart-button"><i class="fas fa-heart"></i></button>
+    </div>
+
+    <!-- PANTALLA 6: VIDEO CLIP FINAL (MÚSICA Y GALERÍA) - AHORA ABSOLUTA -->
+    <div id="screen-6" class="screen">
+        <!-- Imagen que simula el carrusel, ocupa toda la pantalla -->
+        <img id="gallery-image" src="images/1.jpg" alt="Video Clip Final">
+        
+        <!-- Contenedor que antes era de Letra, ahora se usa para overlay o si se necesita texto -->
+        <div class="lyrics-container" style="display: none;">
+            <span id="current-lyric" class="current-lyric"></span>
+        </div>
+        
+        <!-- Reproductor de Audio (Oculto) -->
+        <audio id="audio-player" preload="auto">
+            <!-- RUTA ACTUALIZADA: Música -->
+            <source src="sounds/Te_amo_y_mas.mp3" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+    </div>
+    
+    <!-- Mensaje flotante de Tooltip -->
+    <div id="tooltip" class="tooltip-message"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- CONSTANTES DE PANTALLAS Y ELEMENTOS ---
+            const screens = {
+                '1': document.getElementById('screen-1'),
+                '2': document.getElementById('screen-2'),
+                '3': document.getElementById('screen-3'),
+                '4': document.getElementById('screen-4'),
+                '5': document.getElementById('screen-5'),
+                '6': document.getElementById('screen-6')
+            };
+            
+            const btnToScreen3 = document.getElementById('btn-to-screen3');
+            const btnToStart = document.getElementById('btn-to-start');
+            const btnNextMemory = document.getElementById('btn-next-memory');
+            const heartBtn = document.getElementById('heart-btn');
+            const touchPrompt = document.getElementById('touch-prompt');
+
+            const gameTitle = document.getElementById('game-title');
+            const guessInput = document.getElementById('guess-input');
+            const btnSubmitGuess = document.getElementById('btn-submit-guess'); // NUEVO
+            const patitoBtn = document.getElementById('patito-btn');
+            const imageContainer = document.getElementById('image-container');
+            const recalledImage = document.getElementById('recalled-image');
+            const phraseElement = document.getElementById('phrase');
+            const inputGroup = document.getElementById('input-group');
+            const tooltip = document.getElementById('tooltip');
+            
+            // Elementos de la pantalla final
+            const audioPlayer = document.getElementById('audio-player');
+            const galleryImage = document.getElementById('gallery-image');
+
+            // --- DATA DEL JUEGO (5 RECUERDOS) ---
+            const MEMORIES_DATA = [
+                {
+                    title: "Recuerdo 1",
+                    // RUTA ACTUALIZADA: foto 1
+                    imageUrl: "images/1.jpg", 
+                    phrase: "Donde la creatividad tiene un lugar",
+                    answer: "MUSEO",
+                    hint: "Acá Katty podía volar",
+                },
+                {
+                    title: "Recuerdo 2",
+                    // RUTA ACTUALIZADA: foto 2
+                    imageUrl: "images/2.jpg", 
+                    phrase: "¿Alguna vez quisiste ser modelo?",
+                    answer: "SESION",
+                    hint: "Un par de horas sacandote fotos",
+                },
+                {
+                    title: "Recuerdo 3",
+                    // RUTA ACTUALIZADA: foto 3
+                    imageUrl: "images/3.jpg", 
+                    phrase: "Cumpliste todos mis deseos",
+                    answer: "WANDA",
+                    hint: "Yo era Cosmo y vos mi...",
+                },
+                {
+                    title: "Recuerdo 4",
+                    // RUTA ACTUALIZADA: foto 4
+                    imageUrl: "images/4.jpg", 
+                    phrase: "La aventura superaba el cansancio",
+                    answer: "TREKKING",
+                    hint: "Fuimos con familia y amigos.",
+                },
+                {
+                    title: "Recuerdo 5",
+                    // RUTA ACTUALIZADA: foto 5
+                    imageUrl: "images/5.jpg",
+                    phrase: "Sobra el talco y la pintura",
+                    answer: "CARNAVAL",
+                    hint: "Y nos volvimos decadentes",
+                }
+            ];
+            
+            // --- DATA DE LA GALERÍA FINAL (10 IMÁGENES) ---
+            // Lista extendida de 10 imágenes
+            const FINAL_GALLERY_IMAGES = [
+                "images/1.jpg", "images/2.jpg", "images/3.jpg", "images/4.jpg", "images/5.jpg",
+                "images/6.png", "images/7.jpg", "images/8.jpg", "images/9.jpg", "images/10.jpg"
+            ];
+            
+            // --- VARIABLES DE JUEGO ---
+            let currentMemoryIndex = 0; 
+            let currentGameState = {}; 
+            let isTransitioning = false; 
+            let isAudioPlaying = false; 
+            let galleryIntervalId = null; 
+            let galleryImageIndex = 0; 
+            const IMAGE_DURATION_MS = 4000; // 4 segundos por imagen (para un zoom discreto)
+
+
+            // --- FUNCIONES DE UTILIDAD ---
+            
+            const showTooltip = (message, duration = 2000) => {
+                tooltip.textContent = message;
+                tooltip.classList.add('show');
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, duration);
+            };
+
+            const shakeInput = () => {
+                inputGroup.classList.add('shake');
+                setTimeout(() => {
+                    inputGroup.classList.remove('shake');
+                }, 400);
+            };
+
+            const navigateScreen = (currentScreen, nextScreen, callback = null) => {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                
+                // Ocultar pantalla actual
+                currentScreen.classList.remove('is-visible');
+                currentScreen.style.opacity = '0';
+                
+                // Si la pantalla actual es del flujo normal, se aplica el scale
+                if (currentScreen.id !== 'screen-6') {
+                    currentScreen.style.transform = 'scale(0.95)';
+                }
+
+
+                setTimeout(() => {
+                    currentScreen.style.display = 'none';
+                    
+                    // Mostrar siguiente pantalla
+                    nextScreen.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        nextScreen.classList.add('is-visible');
+                        
+                        // Si la pantalla siguiente es la 6 (que es absoluta)
+                        if (nextScreen.id === 'screen-6') {
+                            nextScreen.style.transform = 'translate(-50%, -50%) scale(1)';
+                        } else {
+                            // Para el resto de pantallas (normales)
+                            nextScreen.style.transform = 'scale(1)';
+                        }
+
+                        isTransitioning = false;
+                        if (callback) callback();
+                    }, 10); 
+                    
+                }, 500);
+            };
+
+            // --- LÓGICA DE JUEGO DINÁMICO (PANTALLA 4) ---
+
+            const loadMemory = (index) => {
+                if (index >= MEMORIES_DATA.length) {
+                    navigateScreen(screens['4'], screens['5'], initScreen5);
+                    return;
+                }
+
+                const memory = MEMORIES_DATA[index];
+                
+                // 1. Inicializar estado del juego
+                currentGameState = {
+                    correctAnswer: memory.answer.toUpperCase(),
+                    hint: memory.hint,
+                    answered: false,
+                    patitoCount: 0,
+                };
+                
+                // 2. Cargar datos visuales
+                gameTitle.textContent = memory.title;
+                recalledImage.src = memory.imageUrl;
+                phraseElement.textContent = `"${memory.phrase}"`;
+                
+                // 3. Resetear elementos de juego
+                guessInput.value = "";
+                guessInput.disabled = false;
+                patitoBtn.disabled = false;
+                patitoBtn.style.backgroundColor = '#5A8BD9'; 
+                imageContainer.classList.remove('revealed'); 
+                
+                // CORRECCIÓN SOLICITADA: Reactivar el botón de submit al cargar una nueva memoria
+                btnSubmitGuess.disabled = false; 
+
+                // 4. Resetear botón de navegación
+                btnNextMemory.disabled = true;
+                btnNextMemory.classList.remove('btn-success', 'btn-error');
+                btnNextMemory.classList.add('btn-disabled');
+                btnNextMemory.textContent = 'No disponible';
+                inputGroup.classList.remove('error'); 
+            };
+
+            const handlePatitoClick = () => {
+                if (currentGameState.answered) return;
+                
+                currentGameState.patitoCount++;
+                
+                if (currentGameState.patitoCount === 1) {
+                    patitoBtn.style.backgroundColor = '#F1C40F'; 
+                    showTooltip(`¡Pista! ${currentGameState.hint}`);
+                } else if (currentGameState.patitoCount >= 2) {
+                    showTooltip("¡Buscando la salida fácil, eh! La palabra era: " + currentGameState.correctAnswer, 4000);
+                    patitoBtn.disabled = true;
+                    patitoBtn.style.backgroundColor = '#888888';
+                    
+                    guessInput.value = currentGameState.correctAnswer;
+                    // Llama a handleGuess para procesar la respuesta automática del patito
+                    handleGuess(); 
+                }
+            };
+            
+            const handleGuess = (e) => {
+                if (e && e.preventDefault) { e.preventDefault(); }
+                if (currentGameState.answered) return;
+
+                const guess = guessInput.value.trim().toUpperCase();
+                
+                if (guess === currentGameState.correctAnswer) {
+                    currentGameState.answered = true;
+                    imageContainer.classList.add('revealed');
+                    
+                    // Estado de éxito
+                    btnNextMemory.disabled = false;
+                    btnNextMemory.classList.remove('btn-disabled', 'btn-error');
+                    btnNextMemory.classList.add('btn-success');
+                    btnNextMemory.textContent = 'Siguiente';
+                    
+                    guessInput.disabled = true;
+                    patitoBtn.disabled = true;
+                    btnSubmitGuess.disabled = true; // Deshabilitar submit al acertar
+                    
+                } else {
+                    shakeInput();
+                    inputGroup.classList.add('error');
+                    btnNextMemory.classList.remove('btn-disabled', 'btn-success');
+                    btnNextMemory.classList.add('btn-error');
+                    btnNextMemory.textContent = 'Intentá de nuevo';
+                    
+                    setTimeout(() => {
+                        inputGroup.classList.remove('error');
+                        // El botón vuelve a 'No disponible' si el usuario no ha acertado 
+                        if (!currentGameState.answered) { 
+                             btnNextMemory.classList.remove('btn-error');
+                             btnNextMemory.classList.add('btn-disabled');
+                             btnNextMemory.textContent = 'No disponible';
+                        }
+                    }, 1000);
+                }
+            };
+
+            // --- LÓGICA DE PANTALLA 5 (FELICIDADES) ---
+            const initScreen5 = () => {
+                // Muestra el prompt de "Toca el corazón" después de 3 segundos
+                touchPrompt.style.opacity = 0; // Asegura que empiece invisible
+                setTimeout(() => {
+                    touchPrompt.style.opacity = 1;
+                }, 3000);
+            };
+
+            // --- LÓGICA DE PANTALLA 6 (MÚSICA/GALERÍA) ---
+            const initScreen6 = () => {
+                // Prepara la galería para empezar
+                galleryImageIndex = 0;
+                galleryImage.src = FINAL_GALLERY_IMAGES[galleryImageIndex]; 
+                galleryImage.classList.add('show'); // Aplica animación inicial
+            };
+            
+            const startFinalClip = () => {
+                if (isAudioPlaying) return;
+                isAudioPlaying = true;
+
+                // 1. Iniciar audio con volumen reducido
+                audioPlayer.volume = 0.6; 
+                audioPlayer.currentTime = 0;
+                audioPlayer.play().catch(error => {
+                    console.error("Error al iniciar la reproducción de audio:", error);
+                });
+                
+                // 2. Iniciar carrusel
+                startGalleryCarousel();
+            };
+
+            const startGalleryCarousel = () => {
+                // Limpiar cualquier intervalo anterior
+                if (galleryIntervalId) clearInterval(galleryIntervalId); 
+
+                // Función para cambiar de imagen
+                const changeImage = () => {
+                    galleryImage.classList.remove('show'); // Inicia el fade out/zoom out
+
+                    setTimeout(() => {
+                        galleryImageIndex = (galleryImageIndex + 1) % FINAL_GALLERY_IMAGES.length;
+                        galleryImage.src = FINAL_GALLERY_IMAGES[galleryImageIndex]; // Cambia la fuente
+                        
+                        // Fuerza el repintado de la animación
+                        galleryImage.style.transform = 'scale(1.05)'; 
+                        galleryImage.classList.add('show'); // Inicia el fade in/zoom in
+                        
+                    }, 1500); // Espera 1.5s (duración del fade out) antes de cambiar y hacer fade in
+                };
+                
+                // Aplicar la primera imagen inmediatamente al inicio del clip
+                changeImage();
+                
+                // Establecer intervalo para el ciclo de imágenes
+                galleryIntervalId = setInterval(changeImage, IMAGE_DURATION_MS);
+
+                // Detener carrusel al finalizar el audio
+                audioPlayer.onended = () => {
+                    clearInterval(galleryIntervalId);
+                    isAudioPlaying = false;
+                    // Opcional: navegar a una pantalla final de 'Gracias' si existiera
+                };
+            };
+            
+            // --- LISTENERS GENERALES ---
+            
+            // Pantalla 1 -> 2
+            screens['1'].addEventListener('click', () => {
+                navigateScreen(screens['1'], screens['2']);
+            });
+
+            // Pantalla 2 -> 3
+            btnToScreen3.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                navigateScreen(screens['2'], screens['3']);
+            });
+            
+            // Pantalla 3 -> 4 (Inicio del Juego)
+            btnToStart.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                navigateScreen(screens['3'], screens['4']);
+                loadMemory(currentMemoryIndex); 
+            });
+            
+            // Pantalla 4: Botón Siguiente
+            btnNextMemory.addEventListener('click', () => {
+                // CORRECCIÓN DE BUG: Solo permite avanzar si la respuesta es correcta
+                if (currentGameState.answered) {
+                    currentMemoryIndex++;
+                    loadMemory(currentMemoryIndex);
+                }
+            });
+
+            // Pantalla 4: Lógica de Juego
+            patitoBtn.addEventListener('click', handlePatitoClick);
+            btnSubmitGuess.addEventListener('click', handleGuess); // NUEVO SUBMIT
+            
+            // Permite 'Enter' en el input
+            guessInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    handleGuess(e);
+                }
+            });
+
+            // Pantalla 5 -> 6 (Clic en el corazón)
+            heartBtn.addEventListener('click', () => {
+                navigateScreen(screens['5'], screens['6'], initScreen6);
+            });
+            
+            // Pantalla 6: Iniciar clip al tocar la pantalla
+            screens['6'].addEventListener('click', startFinalClip);
+
+            // Inicialización
+            screens['1'].classList.add('is-visible');
+            
+            // CORRECCIÓN SOLICITADA: Asegurar que screen-6 inicie oculto vía JS, 
+            // ya que CSS absoluto lo sacó del flujo.
+            screens['6'].style.display = 'none';
+
+        });
+    </script>
+</body>
+</html>

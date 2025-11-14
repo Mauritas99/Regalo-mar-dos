@@ -1,0 +1,144 @@
+/* 1. Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=GFS+Didot&display=swap');
+
+/* 2. Estilos Base y Contenedor Principal */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh; 
+    overflow-x: hidden; /* Previene el scroll horizontal */
+}
+
+.principal-container {
+    width: 390px; /* Ancho deseado para móvil */
+    height: 844px; /* Altura deseada para móvil (o usa 100vh) */
+    background-color: #FFE9B1; /* Color de fondo */
+    position: relative; /* CRUCIAL: Los elementos absolutos dentro se posicionan respecto a este contenedor */
+    margin: 0 auto; /* Centra el contenedor si la pantalla es más ancha */
+    overflow: hidden; /* Oculta cualquier desbordamiento de las decoraciones */
+}
+
+/* 3. Estilo del Título Principal */
+.title-screen-1 {
+    font-family: "Anton", sans-serif;
+    font-size: 48px; /* Ajustado para que quepa y sea visible */
+    font-weight: 400;
+    line-height: 1; /* Reduce el espacio entre "Feliz" y "cumpleaños" */
+    text-align: center;
+    color: #44444E;
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
+    
+    /* Posicionamiento en el centro (ajusta el top según el diseño) */
+    position: absolute; 
+    top: 40%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    z-index: 10; /* Asegura que esté sobre el fondo de confeti */
+}
+
+/* 4. Estilos Comunes de los Apodos Flotantes */
+.apodo-flotante {
+    font-family: "GFS Didot", serif; 
+    font-weight: 400;
+    font-style: normal;
+    font-size: 34px;
+    color: #44444E;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    position: absolute; /* Permite posicionarlos libremente */
+    z-index: 5; /* Capa intermedia */
+    /* Estilo de rotación y origen para que rote desde el centro */
+    transform-origin: center center; 
+}
+
+/* 5. Posicionamiento Individual y Rotación de los Apodos */
+
+/* Superior Izquierda */
+.apodo-1 { top: 100px; left: 60px; transform: rotate(-30deg); }
+.apodo-2 { top: 250px; left: 20px; transform: rotate(-15deg); }
+.apodo-3 { bottom: 150px; left: 30px; transform: rotate(-25deg); }
+
+/* Superior Derecha */
+.apodo-4 { top: 200px; right: 20px; transform: rotate(15deg); }
+.apodo-8 { top: 80px; right: 50px; transform: rotate(25deg); }
+
+/* Centro-Inferior */
+.apodo-5 { top: 550px; left: 150px; transform: rotate(5deg); }
+
+/* Inferior Derecha */
+.apodo-6 { bottom: 50px; right: 50px; transform: rotate(35deg); }
+.apodo-7 { bottom: 250px; right: 30px; transform: rotate(10deg); }
+
+/* 6. Fondo de Confeti (Simulación) */
+.confeti-fondo-1{
+    background-image: url("images/serpentinas.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 284px;
+    width: 466px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Debe estar debajo del texto flotante y del título */
+    opacity: 0.75;
+}
+.confeti-fondo-2{
+    background-image: url("images/serpentinas.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 284px;
+    width: 466px;
+    position: absolute;
+    top: 0;
+    left: -190px;
+    z-index: 1; /* Debe estar debajo del texto flotante y del título */
+    opacity: 0.75;
+}
+.confeti-fondo-3{
+    background-image: url("images/serpentinas.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 284px;
+    width: 466px;
+    position: absolute;
+    top: 280px;
+    left: 0;
+    z-index: 1; /* Debe estar debajo del texto flotante y del título */
+    opacity: 0.75;
+}
+.confeti-fondo-4{
+    background-image: url("images/serpentinas.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 284px;
+    width: 466px;
+    position: absolute;
+    top: 280px;
+    left: -190px;
+    z-index: 1; /* Debe estar debajo del texto flotante y del título */
+    opacity: 0.75;
+}
+.confeti-fondo-5{
+    background-image: url("images/serpentinas.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 284px;
+    width: 466px;
+    position: absolute;
+    top: 565px;
+    left: 0;
+    z-index: 1; /* Debe estar debajo del texto flotante y del título */
+    opacity: 0.75;
+}
+.confeti-fondo-6{
+    background-image: url("images/serpentinas.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 284px;
+    width: 466px;
+    position: absolute;
+    top: 565px;
+    left: -190px;
+    z-index: 1; /* Debe estar debajo del texto flotante y del título */
+    opacity: 0.75;
+}
